@@ -5,16 +5,24 @@
   "homepage": "https://uikit.commercetools.com/",
   "bugs": "https://github.com/commercetools/ui-kit/issues",
   "private": true,
-  "keywords": ["javascript", "frontend", "ui-kit", "design-system", "react"],
+  "keywords": [
+    "javascript",
+    "frontend",
+    "ui-kit",
+    "design-system",
+    "react"
+  ],
   "sideEffects": false,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "./scripts/postinstall.sh",
     "clean": "manypkg exec rm -rf dist",
-    "build": "pnpm preconstruct build"
+    "build": "./scripts/build.sh",
+    "design-tokens:build": "pnpm --filter design-system run build:tokens"
   },
   "preconstruct": {
     "packages": [
+      "design-system",
       "packages/components/*"
     ]
   },
