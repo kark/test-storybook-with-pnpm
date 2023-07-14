@@ -1,11 +1,11 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-import { storiesOf } from '@storybook/react';
-import { Formik } from 'formik';
-import { injectIntl } from 'react-intl';
-import { action } from '@storybook/addon-actions';
-import omitEmpty from 'omit-empty-es';
-import { withKnobs, select } from '@storybook/addon-knobs/react';
+import { Component } from "react";
+import PropTypes from "prop-types";
+import { storiesOf } from "@storybook/react";
+import { Formik } from "formik";
+import { injectIntl } from "react-intl";
+import { action } from "@storybook/addon-actions";
+import omitEmpty from "omit-empty-es";
+import { withKnobs, select } from "@storybook/addon-knobs/react";
 import {
   Text,
   ErrorMessage,
@@ -17,17 +17,17 @@ import {
   PrimaryButton,
   SecondaryButton,
   Spacings,
-} from '../../presets/ui-kit';
-import { FormikBox, Section } from '../.storybook/decorators';
-import Forms from './form-inputs.md';
+} from "@commercetools-frontend/ui-kit";
+import { FormikBox, Section } from "../.storybook/decorators";
+import Forms from "./form-inputs.md";
 
 // utilities for story
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // This data would usually be loaded from the project itself.
 // It is defined statically here to keep the example focused on the forms.
-const currencies = ['EUR', 'USD'];
-const resourceLanguages = ['en', 'de', 'pt'];
+const currencies = ["EUR", "USD"];
+const resourceLanguages = ["en", "de", "pt"];
 
 // This compnents fakes the data source.
 // The form does not care where data is coming from.
@@ -37,23 +37,23 @@ const resourceLanguages = ['en', 'de', 'pt'];
 // This makes the form flexible, we can easily move the data source from
 // the CTP API to GraphQL.
 class FakeConnector extends Component {
-  static displayName = 'FakeConnector';
+  static displayName = "FakeConnector";
   static propTypes = { children: PropTypes.func.isRequired };
   product = {
-    id: 'product-id-1',
+    id: "product-id-1",
     version: 1,
-    key: 'shoe',
-    name: { en: 'Shoe', de: 'Schuh' },
-    slug: { en: 'shoe', de: 'schuh' },
+    key: "shoe",
+    name: { en: "Shoe", de: "Schuh" },
+    slug: { en: "shoe", de: "schuh" },
     inventory: 30,
-    price: { currencyCode: 'EUR', centAmount: 300 },
+    price: { currencyCode: "EUR", centAmount: 300 },
   };
   updateProduct = ({ id, version, product }) => {
-    action('updating product', { id, version, product });
-    if (product.key === 'taken-key') {
+    action("updating product", { id, version, product });
+    if (product.key === "taken-key") {
       return delay(200).then(() => {
-        const error = new Error('duplicate-key');
-        error.code = 'DuplicateKeyError';
+        const error = new Error("duplicate-key");
+        error.code = "DuplicateKeyError";
         throw error;
       });
     }
@@ -108,7 +108,7 @@ const docToForm = (doc, locale) => ({
   // The product does not contain a "description" field by default. However,
   // the form expects description to be a string. Hence, we have to fall back
   // to a string here!
-  description: doc.description || '',
+  description: doc.description || "",
   // The inventory should either be an empty string or a number. The inventory
   // could be undefined, in which case toFormValue will set it to an empty
   // string. This eases validation later on, as we don't have to deal with
@@ -224,7 +224,7 @@ const validate = (formValues, locale) => {
 };
 
 class ProductForm extends Component {
-  static displayName = 'ProductForm';
+  static displayName = "ProductForm";
   static propTypes = {
     formik: PropTypes.shape({
       values: PropTypes.shape({
@@ -520,7 +520,7 @@ class ProductForm extends Component {
 
 const Story = injectIntl((props) => {
   const selectedLanguage = select(
-    'selectedLanguage',
+    "selectedLanguage",
     resourceLanguages,
     resourceLanguages[0]
   );
@@ -532,7 +532,7 @@ const Story = injectIntl((props) => {
             initialValues={docToForm(product, props.intl.locale)}
             validate={(formValues) => validate(formValues, props.intl.locale)}
             onSubmit={(formValues, formik) => {
-              action('values of form submission')(formValues);
+              action("values of form submission")(formValues);
               const nextProduct = formToDoc(formValues, props.intl.locale);
               // Usually, we would compute update actions here by comparing
               // nextProduct to the product from FakeConnector.
@@ -561,7 +561,7 @@ const Story = injectIntl((props) => {
                   // on submission time to ensure correct form values.
                   // The example shows how to map API errors back onto
                   // specific fields within the form.
-                  if (error.code === 'DuplicateKeyError') {
+                  if (error.code === "DuplicateKeyError") {
                     formik.setErrors({ key: { duplicate: true } });
                   }
                   // Since we might do things like retrying a request in case
@@ -591,7 +591,7 @@ const Story = injectIntl((props) => {
   );
 });
 
-storiesOf('Examples|Forms/Inputs', module)
+storiesOf("Examples|Forms/Inputs", module)
   .addDecorator(withKnobs)
   .addParameters({
     readme: {
@@ -599,4 +599,4 @@ storiesOf('Examples|Forms/Inputs', module)
       sidebar: Forms,
     },
   })
-  .add('Basic Formik Example', () => <Story />);
+  .add("Basic Formik Example", () => <Story />);
